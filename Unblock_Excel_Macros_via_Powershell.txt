@@ -1,0 +1,8 @@
+# Change directory to your folder
+cd "C:\Data\CANDI\CANDI_2025_8.0"
+
+# Unblock all macro-enabled Excel and Word files recursively
+Get-ChildItem -Path . -Include *.xlsm, *.docm -Recurse | Unblock-File
+
+# Optional: confirm files are unblocked
+Get-ChildItem -Path . -Include *.xlsm, *.docm -Recurse | ForEach-Object { $_.FullName + " - Unblocked" }
