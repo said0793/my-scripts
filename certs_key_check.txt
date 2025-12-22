@@ -1,0 +1,25 @@
+for name in \
+  evnfm1.mo.mo.re \
+  evnfmgas1.mo.mo.re \
+  evnfmhelmreg1.mo.mo.re \
+  evnfmiam.mo.mo.re \
+  evnfmlogfw1.mo.mo.re \
+  evnfmreg1.mo.mo.re
+do
+  echo "Checking $name"
+
+  cert_hash=$(openssl x509 -in $name.crt -pubkey -noout \
+    | openssl pkey -pubin -outform der \
+    | openssl sha256)
+
+  key_hash=$(openssl pkey -in $name.key -pubout \
+    | openssl pkey -pubin -outform der \
+    | openssl sha256)
+
+  if [ "$cert_hash" = "$key_hash" ]; then
+    echo "  ✅ MATCH"
+  else
+    echo "  ❌ MISMATCH"
+  fi
+  echo
+done
